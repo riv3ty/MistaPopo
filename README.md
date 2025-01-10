@@ -7,7 +7,7 @@ Der MistaPopo Bot ist ein Discord Bot, der verschiedene Befehle und Funktionen b
 ### Installation
 1. Klone das Repository:
     ```bash
-    git clone https://github.com/DeinBenutzername/MistaPopo.git
+    git clone https://github.com/riv3ty/MistaPopo.git
     ```
 2. Navigiere in das Projektverzeichnis:
     ```bash
@@ -15,7 +15,7 @@ Der MistaPopo Bot ist ein Discord Bot, der verschiedene Befehle und Funktionen b
     ```
 3. Installiere die benötigten Abhängigkeiten:
     ```bash
-    pip install -r requirements.txt
+    pip install discord.py
     ```
 
 ### Nutzung
