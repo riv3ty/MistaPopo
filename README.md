@@ -77,5 +77,8 @@ Nutzer können auf einer Topic-Seite über das Formular einen Beitrag posten.
 
 ## Status
 
-Frühes Grundgerüst. Noch offen: Auth/Signaturen für Föderation, Moderation,
-Frontend, Sicherheitskonzept (siehe "sicher" im Projektziel).
+Frühes Grundgerüst. Erledigt: Login/Registrierung, Beiträge erstellen,
+stabile Actor-Schlüssel für die Föderation. Noch offen: eingehende
+Föderations-Aktivitäten von anderen Instanzen tatsächlich verarbeiten
+(Inbox ist eingerichtet, aber leer), Moderation, Rate-Limits,
+Sicherheitsprüfung vor echtem Betrieb.

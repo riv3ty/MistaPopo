@@ -19,6 +19,23 @@ model User {
 
   posts    Post[]
   sessions Session[]
+  keys     ActorKey[]
+}
+
+// Kryptografisches Schlüsselpaar für den ActivityPub-Actor eines Nutzers.
+// Muss stabil bleiben, sonst verliert der Nutzer bei jedem Server-Neustart
+// seine "Identität" gegenüber anderen Fediverse-Instanzen. Pro Nutzer gibt es
+// zwei Einträge (RSA und Ed25519), da unterschiedliche Software im Fediverse
+// unterschiedliche Signaturverfahren erwartet.
+model ActorKey {
+  id         String @id @default(uuid())
+  userId     String
+  user       User   @relation(fields: [userId], references: [id])
+  algorithm  String // "RSASSA-PKCS1-v1_5" | "Ed25519"
+  privateJwk String // JSON Web Key, als JSON-String gespeichert
+  publicJwk  String
+
+  @@unique([userId, algorithm])
 }
 
 // Eine angemeldete Sitzung: der Wert der Session-ID landet als Cookie im
