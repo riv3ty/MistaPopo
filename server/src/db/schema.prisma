@@ -17,7 +17,19 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
 
-  posts Post[]
+  posts    Post[]
+  sessions Session[]
+}
+
+// Eine angemeldete Sitzung: der Wert der Session-ID landet als Cookie im
+// Browser, damit sich der Server bei jedem Request an den Nutzer erinnert,
+// ohne das Passwort erneut zu verlangen.
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 }
 
 // Ein Thema/eine Community, z.B. "Homelab", "3D-Druck", "Netzwerktechnik".

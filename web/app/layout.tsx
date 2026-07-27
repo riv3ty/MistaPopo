@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import AuthStatus from "../components/AuthStatus";
 import "./globals.css";
 
 export const metadata = {
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <header className="site-header">
           <a href="/" className="logo">dontroot.de</a>
+          <AuthStatus />
         </header>
         <main>{children}</main>
       </body>

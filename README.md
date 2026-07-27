@@ -68,6 +68,13 @@ npm run dev   # Webseite läuft auf http://localhost:3000
 Der Seed-Befehl legt einen Testnutzer an: Benutzername `testuser`, Passwort
 `test1234` (nur für die lokale Entwicklung, niemals für echten Betrieb).
 
+## Anmeldung
+
+Registrierung/Login laufen über Sitzungs-Cookies (Session): nach dem Login
+merkt sich der Browser ein Cookie, das der Server bei jedem weiteren Request
+prüft. Unter `/login` und `/register` im Frontend erreichbar. Angemeldete
+Nutzer können auf einer Topic-Seite über das Formular einen Beitrag posten.
+
 ## Status
 
 Frühes Grundgerüst. Noch offen: Auth/Signaturen für Föderation, Moderation,

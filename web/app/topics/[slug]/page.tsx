@@ -1,4 +1,5 @@
 import { getTopicPosts } from "../../../lib/api";
+import PostForm from "../../../components/PostForm";
 
 export default async function TopicPage({ params }: { params: { slug: string } }) {
   try {
@@ -8,6 +9,7 @@ export default async function TopicPage({ params }: { params: { slug: string } }
       <div>
         <a className="back-link" href="/">← Alle Topics</a>
         <h1>{params.slug}</h1>
+        <PostForm slug={params.slug} />
         {posts.length === 0 && <p>Noch keine Beiträge in diesem Topic.</p>}
         {posts.map((post) => (
           <article className="post" key={post.id}>
