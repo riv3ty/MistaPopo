@@ -49,8 +49,12 @@ cp .env.example .env
 npm install
 docker compose -f ../docker-compose.yml up -d   # startet die Datenbank
 npm run prisma:migrate                            # legt die Tabellen an
+npm run db:seed                                   # legt Beispiel-Topics/-Beiträge an
 npm run dev                                       # Server läuft auf Port 8000
 ```
+
+`npm run prisma:migrate` führt den Seed übrigens automatisch mit aus; `npm run db:seed`
+ist nur nötig, wenn du ihn danach nochmal separat anstoßen willst.
 
 Frontend (in einem zweiten Terminal):
 
@@ -61,9 +65,8 @@ npm install
 npm run dev   # Webseite läuft auf http://localhost:3000
 ```
 
-Ohne Beispieldaten zeigt die Startseite aktuell "Noch keine Topics vorhanden" –
-das ist normal, es gibt noch keine Möglichkeit, im Browser Topics/Beiträge
-anzulegen (siehe "Status" unten).
+Der Seed-Befehl legt einen Testnutzer an: Benutzername `testuser`, Passwort
+`test1234` (nur für die lokale Entwicklung, niemals für echten Betrieb).
 
 ## Status
 
