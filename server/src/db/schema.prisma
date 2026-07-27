@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Lokale Nutzer dieser Instanz. Föderierte (Remote-)Nutzer werden nicht hier,
+// sondern als reine ActivityPub-Aktoren im federation-Layer gehandhabt.
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  displayName  String?
+  bio          String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  posts    Post[]
+  sessions Session[]
+  keys     ActorKey[]
+}
+
+// Kryptografisches Schlüsselpaar für den ActivityPub-Actor eines Nutzers.
+// Muss stabil bleiben, sonst verliert der Nutzer bei jedem Server-Neustart
+// seine "Identität" gegenüber anderen Fediverse-Instanzen. Pro Nutzer gibt es
+// zwei Einträge (RSA und Ed25519), da unterschiedliche Software im Fediverse
+// unterschiedliche Signaturverfahren erwartet.
+model ActorKey {
+  id         String @id @default(uuid())
+  userId     String
+  user       User   @relation(fields: [userId], references: [id])
+  algorithm  String // "RSASSA-PKCS1-v1_5" | "Ed25519"
+  privateJwk String // JSON Web Key, als JSON-String gespeichert
+  publicJwk  String
+
+  @@unique([userId, algorithm])
+}
+
+// Eine angemeldete Sitzung: der Wert der Session-ID landet als Cookie im
+// Browser, damit sich der Server bei jedem Request an den Nutzer erinnert,
+// ohne das Passwort erneut zu verlangen.
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+// Ein Thema/eine Community, z.B. "Homelab", "3D-Druck", "Netzwerktechnik".
+model Topic {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  posts Post[]
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  topicId String
+  topic   Topic  @relation(fields: [topicId], references: [id])
+}
