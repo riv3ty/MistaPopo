@@ -33,19 +33,37 @@ server/            ActivityPub-Server (Federation, API, Datenmodell)
     federation/    ActivityPub-Actor, Inbox/Outbox, Webfinger
     routes/        HTTP-API für Client-Zugriffe
     db/            Prisma-Schema & Client
+web/                Frontend – die Webseite, die man im Browser sieht
+  app/              Seiten (Startseite mit Topic-Liste, Topic-Detailseite)
+  lib/api.ts        Ruft Daten vom Backend-Server ab
 docker-compose.yml  Lokale Postgres-Instanz für die Entwicklung
 ```
 
 ## Lokale Entwicklung
 
+Backend (muss laufen, damit das Frontend Daten anzeigen kann):
+
 ```bash
 cd server
 cp .env.example .env
 npm install
-docker compose -f ../docker-compose.yml up -d
-npm run prisma:migrate
-npm run dev
+docker compose -f ../docker-compose.yml up -d   # startet die Datenbank
+npm run prisma:migrate                            # legt die Tabellen an
+npm run dev                                       # Server läuft auf Port 8000
 ```
+
+Frontend (in einem zweiten Terminal):
+
+```bash
+cd web
+cp .env.example .env
+npm install
+npm run dev   # Webseite läuft auf http://localhost:3000
+```
+
+Ohne Beispieldaten zeigt die Startseite aktuell "Noch keine Topics vorhanden" –
+das ist normal, es gibt noch keine Möglichkeit, im Browser Topics/Beiträge
+anzulegen (siehe "Status" unten).
 
 ## Status
 
