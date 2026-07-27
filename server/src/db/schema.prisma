@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Lokale Nutzer dieser Instanz. Föderierte (Remote-)Nutzer werden nicht hier,
+// sondern als reine ActivityPub-Aktoren im federation-Layer gehandhabt.
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  displayName  String?
+  bio          String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  posts Post[]
+}
+
+// Ein Thema/eine Community, z.B. "Homelab", "3D-Druck", "Netzwerktechnik".
+model Topic {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  posts Post[]
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  topicId String
+  topic   Topic  @relation(fields: [topicId], references: [id])
+}
